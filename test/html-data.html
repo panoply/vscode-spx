@@ -1,0 +1,115 @@
+<!-- demo.js component -->
+<div spx-component="demo" spx-demo:name="foo" spx-demo:clicks="0" spx-demo:object="{ foo: 'bar', number: 1234, }">
+
+  <div class="component">
+    <h6>This is the
+      <code>demo.js</code>
+      component
+    </h6>
+
+    <!-- demo.js action -->
+    <button type="button" spx@click="demo.button">
+      Press me
+    </button>
+    <!-- demo.js node -->
+    <p spx-node="demo.feedback">Clicked: 0</p>
+
+  </div>
+  <div class="component">
+    <h6>This is the
+      <code>test.js</code>
+      component
+    </h6>
+
+    <!-- test.js component -->
+    <div spx-component="test" spx-test:id="example" spx-test:count="1">
+      <!-- text.js action and node -->
+      <div class="test" spx@hover="test.increment">
+        Mouseover (hover) this pink box:
+        <code spx-node="test.count">0</code>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr>
+
+<a s></a>
+
+<!-- demo.js component using increments -->
+<div spx-component="demo" spx-demo:name="counter" spx-demo:min="5" spx-demo:qty="7" spx-demo:max="10">
+
+  <div class="component">
+    <h6>This is the
+      <code>demo.js</code>
+      component as a counter
+    </h6>
+
+    <!-- demo.js action -->
+    <button type="button" spx@click="demo.decrement">
+      +
+    </button>
+    <a href="foo" spx-hover="false"></a>
+    <!-- demo.js node -->
+    <p spx-node="demo.counter">7</p>
+    <!-- demo.js action -->
+    <button type="button" spx@click="demo.increment">
+      -
+    </button>
+
+    <h4 spx-node="demo.feedback"></h4>
+  </div>
+</div>
+
+<hr>
+
+<div spx-component="foo|bar" spx-foo:active="false" spx-foo:change="I am value of spx:change attribute"
+  spx-bar:size="window.innerWidth" spx@resize="window.bar">
+
+  <div class="component" spx->
+    <h6>This is the
+      <code>foo.js</code>
+      and
+      <code>bar.js</code>
+      component
+    </h6>
+
+    <script>
+      class foo {
+
+        method() {
+          let num = 12003
+        }
+
+      }
+
+      const x = new foo()
+
+      const u = {
+        foo: 'jj'
+      }
+      window.foo = ''
+    </script>
+
+
+
+    <!-- foo.js action and nodes -->
+    <div class="foo" spx@click="foo.toggle">
+      <span spx-node="foo.text">
+        Click this div and the value of
+        <code>spx-bar:change</code>
+        will inserted
+      </span>
+      <p spx-node="foo.info">
+        This text content will change when you click the div
+      </p>
+    </div>
+
+    <div class="bar">
+      Resize Window to see value:
+      <!-- bar.js node -->
+      <code spx-node="bar.width">0</code>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+[
+  {
+    "name": "spx-track",
+    "description": "Track the element a per-page basis which is not be contained within targets",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/attributes/spx-track"
+      }
+    ]
+  },
+  {
+    "name": "spx-target",
+    "description": "Track the element a per-page basis which is not be contained within targets",
+    "values": [
+      {
+        "name": "true",
+        "description": "Includes the element during renders. This is not required, as `spx-target` defaults to `true` and there is no need to annotate with this value unless verbosity is preferred."
+      },
+      {
+        "name": "false",
+        "description": "Will exclude element from next known navigation"
+      }
+    ],
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/attributes/spx-track"
+      }
+    ]
+  }
+]

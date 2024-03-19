@@ -1,0 +1,62 @@
+{
+  "name": "vscode-spx",
+  "publisher": "sissel",
+  "displayName": "SPX",
+  "description": "SPX (Single Page XHR) Enhancements",
+  "version": "0.0.1",
+  "author": "Νίκος Σαβίδης <n.savvidis@gmx.com>",
+  "license": "MIT",
+  "icon": "logo.png",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/panoply/vscode-spx.git"
+  },
+  "bugs": {
+    "url": "https://github.com/panoply/vscode-spx/issues"
+  },
+  "engines": {
+    "vscode": "^1.44.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "html": {
+      "customData": [
+        "./html.html-data.json"
+      ]
+    },
+    "grammars": [
+      {
+        "scopeName": "source.spx",
+        "path": "./syntax/spx.tmlanguage.json",
+        "injectTo": [
+          "text.html.derivative",
+          "source.liquid"
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "data": "cd data; node ./generate.cjs; cd ..",
+    "build": "vsce package --no-dependencies"
+  },
+  "prettier": "@sissel/prettier-config",
+  "eslintConfig": {
+    "extends": "@sissel/eslint-config"
+  },
+  "devDependencies": {
+    "@sissel/eslint-config": "^1.2.1",
+    "@sissel/prettier-config": "^1.2.5",
+    "@vscode/web-custom-data": "^0.4.8",
+    "tsup": "^8.0.1"
+  },
+  "dependencies": {
+    "@typescript-eslint/typescript-estree": "^7.3.0",
+    "esbuild": "^0.20.2",
+    "esthetic": "0.6.4-beta.1",
+    "typescript": "^5.4.2",
+    "typescript-parser": "^2.6.1"
+  }
+}

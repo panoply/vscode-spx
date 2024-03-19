@@ -1,0 +1,514 @@
+[
+  {
+    "tags": [
+      "track"
+    ],
+    "name": "spx@cuechange",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLTrackElement/cuechange_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "details"
+    ],
+    "name": "spx@toggle",
+    "description": "Fires when the open/closed state of a `<details>` element is toggled.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLDetailsElement/toggle_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "input",
+      "dialog"
+    ],
+    "name": "spx@cancel",
+    "description": "The cancel event is fired by `<input>` and `<dialog>` elements. The event is fired when the user cancels the currently open dialog by closing it with the `Esc` key. It is also fired by the file input when the user cancels the file picker dialog via the Esc key or the cancel button and when the user re-selects the same files that were previously selected.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLDialogElement/cancel_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "form"
+    ],
+    "name": "spx@submit",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLFormElement/submit_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "form"
+    ],
+    "name": "spx@reset",
+    "description": "Fires when the user resets a form.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLFormElement/reset_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "form"
+    ],
+    "name": "spx@formdata",
+    "description": "Fires after the entry list representing the form's data is constructed. This happens when the form is submitted",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLFormElement/formdata_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "input",
+      "select",
+      "textarea"
+    ],
+    "name": "spx@select",
+    "description": "Fires when the current selection changes.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLInputElement/select_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "input",
+      "select",
+      "textarea"
+    ],
+    "name": "spx@input",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLElement/input_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "input",
+      "select",
+      "textarea"
+    ],
+    "name": "spx@invalid",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLElement/invalid_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "slot"
+    ],
+    "name": "spx@slotchange",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLSlotElement/slotchange_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@abort",
+    "description": "Fires when the user aborts the download.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/abort_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@pause",
+    "description": "Fires when playback is paused.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/pause_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@play",
+    "description": "Fires when playback has begun.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/play_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@playing",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/playing_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@canplay",
+    "description": "Occurs when playback is possible, but would require further buffering.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/canplay_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@canplaythrough",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/canplaythrough_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@durationchange",
+    "description": "Occurs when the duration attribute is updated.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/durationchange_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@emptied",
+    "description": "Occurs when the media element is reset to its initial state.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/emptied_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@ended",
+    "description": "Occurs when the end of playback is reached.\n@param ev The event\n\"",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/ended_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@loadeddata",
+    "description": "Fires when data should be loaded for the media element.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/loadeddata_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@loadedmetadata",
+    "description": "Fires when meta data for the media element should be loaded.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/loadedmetadata_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@ratechange",
+    "description": "Occurs when the playback rate is increased or decreased.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/ratechange_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@seeked",
+    "description": "Occurs when the seek operation ends.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/seeked_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@seeking",
+    "description": "Occurs when the current playback position is moved.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/seeking_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@stalled",
+    "description": "Occurs when the download has stopped.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/stalled_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@suspend",
+    "description": "Occurs if the load operation has been intentionally halted.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/suspend_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@timeupdate",
+    "description": "Occurs to indicate the current playback position.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/timeupdate_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@volumechange",
+    "description": "Occurs when the volume is changed, or playback is muted or unmuted.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/volumechange_event"
+      }
+    ]
+  },
+  {
+    "tags": [
+      "video",
+      "audio"
+    ],
+    "name": "spx@waiting",
+    "description": "Occurs when playback stops because the next frame of a video resource is not available.",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/events"
+      },
+      {
+        "name": "MDN Reference",
+        "url": "https://developer.mozilla.org/docs/Web/API/HTMLMediaElement/waiting_event"
+      }
+    ]
+  }
+]

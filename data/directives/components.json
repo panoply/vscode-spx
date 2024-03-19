@@ -1,0 +1,22 @@
+[
+  {
+    "name": "spx-component",
+    "description": "Defines an SPX component",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/directives"
+      }
+    ]
+  },
+  {
+    "name": "spx-node",
+    "description": "Specifies an Element that should be applied to a component. The value is an object notation reference, e.g: `<div spx-node=\"component.name\">` where `component` would represent an `spx-component` identifier and `name` is the name of the node element you will access within your class component (e.g: `this.fooNode`).",
+    "references": [
+      {
+        "name": "SPX Reference",
+        "url": "https://spx.js.org/components/nodes"
+      }
+    ]
+  }
+]

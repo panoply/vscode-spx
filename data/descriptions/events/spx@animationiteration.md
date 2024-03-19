@@ -1,0 +1,1 @@
+Fired when an iteration of a [CSS Animation](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations) ends, and another one begins. This event does not occur at the same time as the [`animationend`](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationend_event) event, and therefore does not occur for animations with an `animation-iteration-count` of one.

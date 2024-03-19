@@ -1,0 +1,202 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "scopeName": "source.spx",
+  "injectionSelector": "L:text.html.derivative -entity.other.attribute-name.html",
+  "L:string - (string.quoted.*.html)": {
+    "patterns": [
+      {
+        "include": "#attribute-interior"
+      },
+      {
+        "include": "#values"
+      }
+    ]
+  },
+  "patterns": [
+    {
+      "include": "#directives"
+    },
+    {
+      "include": "#events"
+    },
+    {
+      "include": "#data"
+    }
+  ],
+  "repository": {
+    "directives": {
+      "begin": "\\s(spx\\-[a-z]+)(?![\\w:-])",
+      "beginCaptures": {
+        "1": {
+          "name": "support.class.spx.html"
+        }
+      },
+      "end": "(?=\\s*+[^=\\s])",
+      "name": "meta.attribute.$1.html",
+      "patterns": [
+        {
+          "include": "text.html.basic#attribute-interior"
+        }
+      ]
+    },
+    "events": {
+      "name": "meta.attribute.$1.html",
+      "begin": "(spx)(\\@)([a-z]+)",
+      "beginCaptures": {
+        "1": {
+          "name": "support.class.spx.html"
+        },
+        "2": {
+          "name": "keyword.operator.spx.html"
+        },
+        "3": {
+          "name": "entity.name.function.spx.html"
+        }
+      },
+      "end": "(?=\\s*+[^=\\s])",
+      "patterns": [
+        {
+          "include": "#attribute-interior"
+        }
+      ]
+    },
+    "data": {
+      "name": "meta.attribute.$1.html",
+      "begin": "(spx\\-[a-z]+)(:)([a-zA-Z0-9_-]+)(?=\\=)",
+      "beginCaptures": {
+        "1": {
+          "name": "support.class.spx.html"
+        },
+        "2": {
+          "name": "keyword.operator.spx.html"
+        },
+        "3": {
+          "name": "support.type.property-name.spx.html"
+        },
+        "4": {
+          "name": "punctuation.separator.key-value.html"
+        }
+      },
+      "end": "(?=\\s*+[^=\\s])",
+      "patterns": [
+        {
+          "include": "#attribute-interior"
+        }
+      ]
+    },
+    "values": {
+      "patterns": [
+        {
+          "match": "([a-zA-Z0-9_-]+)([\\.|, ])([a-zA-Z0-9_-]+)",
+          "captures": {
+            "1": {
+              "name": "support.type.property-name.spx.html"
+            },
+            "2": {
+              "name": "keyword.operator.spx.html"
+            }
+          }
+        },
+        {
+          "match": "\\b(true|false)\\b",
+          "name": "constant.other.spx.html"
+        }
+      ]
+    },
+    "attribute-interior": {
+      "patterns": [
+        {
+          "begin": "=",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.key-value.html"
+            }
+          },
+          "end": "(?<=[^\\s=])(?!\\s*=)|(?=/?>)",
+          "patterns": [
+            {
+              "match": "([^\\s\"'=<>`/]|/(?!>))+",
+              "name": "string.unquoted.html"
+            },
+            {
+              "name": "string.quoted.double.html",
+              "begin": "\"",
+              "beginCaptures": {
+                "0": {
+                  "name": "punctuation.definition.string.begin.spx.html"
+                }
+              },
+              "end": "\"",
+              "endCaptures": {
+                "0": {
+                  "name": "punctuation.definition.string.end.html"
+                }
+              },
+              "patterns": [
+                {
+                  "match": "\\b(true|false)\\b",
+                  "name": "constant.other.spx.html"
+                },
+                {
+                  "match": "(\\d+|\\d+\\.\\d+)",
+                  "name": "constant.numeric.decimal.spx.html"
+                },
+                {
+                  "match": "([a-zA-Z0-9_-]+)(\\.)([a-zA-Z0-9_-]+)",
+                  "captures": {
+                    "1": {
+                      "name": "variable.other.constant.spx.html",
+                      "patterns": [
+                        {
+                          "match": "\\b(window)\\b",
+                          "name": "variable.other.object.spx.html"
+                        }
+                      ]
+                    },
+                    "2": {
+                      "name": "keyword.operator.spx.html"
+                    },
+                    "3": {
+                      "name": "entity.name.function.spx.html"
+                    }
+                  }
+                },
+                {
+                  "include": "#entities"
+                },
+                {
+                  "match": "[{[]",
+                  "include": "source.js"
+                }
+              ]
+            },
+            {
+              "begin": "'",
+              "beginCaptures": {
+                "0": {
+                  "name": "punctuation.definition.string.begin.html"
+                }
+              },
+              "end": "'",
+              "endCaptures": {
+                "0": {
+                  "name": "punctuation.definition.string.end.html"
+                }
+              },
+              "name": "string.quoted.single.html",
+              "patterns": [
+                {
+                  "include": "#entities"
+                }
+              ]
+            },
+            {
+              "match": "=",
+              "name": "invalid.illegal.unexpected-equals-sign.html"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
