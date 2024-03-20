@@ -21,12 +21,29 @@
   "categories": [
     "Programming Languages"
   ],
+  "main": "./dist/index.js",
+  "activationEvents": [
+    "onLanguage:html",
+    "onLanguage:liquid"
+  ],
   "contributes": {
     "html": {
       "customData": [
-        "./html.html-data.json"
+        "customData:/data.json"
       ]
     },
+    "commands": [
+      {
+        "title": "SPX: Enable Completions",
+        "shortTitle": "Activate SPX Directive Completions",
+        "command": "spx.enableCompletions"
+      },
+      {
+        "title": "SPX: Disable Completions",
+        "shortTitle": "Deactivate SPX Directive Completions",
+        "command": "spx.disableCompletions"
+      }
+    ],
     "grammars": [
       {
         "scopeName": "source.spx",
@@ -36,9 +53,22 @@
           "source.liquid"
         ]
       }
+    ],
+    "configuration": [
+      {
+        "title": "SPX Settings",
+        "properties": {
+          "spx.completion.directives": {
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Control whether or not SPX directive completions are provided in HTML/Markup languages. When set to `false`, the extension will not display completions for `spx-*` attributes and values, defaults to using `true`.\n\n> It's advisable to disable directive completions when working on projects that do not utilize SPX."
+          }
+        }
+      }
     ]
   },
   "scripts": {
+    "dev": "tsup --watch",
     "data": "cd data; node ./generate.cjs; cd ..",
     "build": "vsce package --no-dependencies"
   },
@@ -58,5 +88,8 @@
     "esthetic": "0.6.4-beta.1",
     "typescript": "^5.4.2",
     "typescript-parser": "^2.6.1"
+  },
+  "optionalDependencies": {
+    "@types/vscode": "^1.87.0"
   }
 }

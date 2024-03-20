@@ -1,7 +1,21 @@
 <!-- demo.js component -->
-<div spx-component="demo" spx-demo:name="foo" spx-demo:clicks="0" spx-demo:object="{ foo: 'bar', number: 1234, }">
+<div
+  spx-component="demo"
+  spx-demo:string="tureeee"
+  spx-demo:clicks="0"
+  spx-demo:boolean="true"
+  spx-foo:change="I am true value of spx:change attribute"
+  spx-demo:object="{ str: 'bar', num: 1234: bool: true, arr: ['a', 1], obj: { x: false }  }"
+  spx-demo:array="[ { num: 1234:, str: 'foo' }, true, 'a', 1]">
 
-  <div class="component">
+  <div
+    class="component"
+    spx@click="demo.button"
+    spx-node="reference.name"
+    spx@hover="window.ref ref.method"
+    spx@resize="window.bar { passive, once }">
+
+
     <h6>This is the
       <code>demo.js</code>
       component
@@ -15,7 +29,7 @@
     <p spx-node="demo.feedback">Clicked: 0</p>
 
   </div>
-  <div class="component">
+  <div class="component" spx>
     <h6>This is the
       <code>test.js</code>
       component
@@ -24,7 +38,7 @@
     <!-- test.js component -->
     <div spx-component="test" spx-test:id="example" spx-test:count="1">
       <!-- text.js action and node -->
-      <div class="test" spx@hover="test.increment">
+      <div class="test" spx@hover="test.increment text.demo">
         Mouseover (hover) this pink box:
         <code spx-node="test.count">0</code>
       </div>
@@ -38,7 +52,7 @@
 <a s></a>
 
 <!-- demo.js component using increments -->
-<div spx-component="demo" spx-demo:name="counter" spx-demo:min="5" spx-demo:qty="7" spx-demo:max="10">
+<div spx-component="demo|sdoof" spx-demo:name="counter" spx-demo:min="5" spx-demo:qty="7" spx-demo:max="10">
 
   <div class="component">
     <h6>This is the
@@ -76,13 +90,17 @@
     </h6>
 
     <script>
+
+      import foo from 'jjj'
       class foo {
 
         method() {
-          let num = 12003
+          let num = true
         }
 
       }
+
+
 
       const x = new foo()
 
