@@ -11,6 +11,9 @@ width="160px">
 
 Language and intelliSense support for the [SPX](https://spx.js.org) JavaScript/TypeScript framework. Provides syntax highlighting, directive completions and various enhancements those leveraging SPX in their projects.
 
+> **Note**<br>
+> Completions are still being composed and will not be accurate until SPX reaches an official release.
+
 ### Key Features
 
 - Syntax Highlighting for `spx-*` annotations in markup.
@@ -21,7 +24,7 @@ Language and intelliSense support for the [SPX](https://spx.js.org) JavaScript/T
 
 # Usage
 
-The extension requires users to signal that they using SPX in their project using the `spx.enable` contribution setting. Syntax highlighting is automatically applied via HTML grammar injection to all `spx-*` attribute occurrences within markup languages. Directive completions will also be applied accordingly.
+The extension exposes an enabled/disable workspace settings which can be used to either activate or deactivate directive completions. Syntax highlighting is automatically applied using HTML grammar injections, as such all `spx-*` attribute occurrences within markup languages apply highlighting.
 
 > Given the large data set applied to event directives, one may prefer to disable the extension when they are not working with SPX.
 
@@ -32,8 +35,7 @@ The below workspace settings are made available:
 <!-- prettier-ignore -->
 ```jsonc
 {
-  "spx.enable": true,       // Enable/Disable the extension
-  "spx.completions": true   // Enable/Disable completions
+  "spx.completion.directives": true   // Enable/Disable directive completions
 }
 ```
 
