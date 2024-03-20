@@ -2,16 +2,6 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "scopeName": "source.spx",
   "injectionSelector": "L:text.html.derivative -entity.other.attribute-name.html",
-  "L:string - (string.quoted.*.html)": {
-    "patterns": [
-      {
-        "include": "#attribute-interior"
-      },
-      {
-        "include": "#values"
-      }
-    ]
-  },
   "patterns": [
     {
       "include": "#directives"
@@ -20,11 +10,12 @@
       "include": "#events"
     },
     {
-      "include": "#data"
+      "include": "#states"
     }
   ],
   "repository": {
     "directives": {
+      "name": "meta.attribute.$1.html",
       "begin": "\\s(spx\\-[a-z]+)(?![\\w:-])",
       "beginCaptures": {
         "1": {
@@ -32,10 +23,9 @@
         }
       },
       "end": "(?=\\s*+[^=\\s])",
-      "name": "meta.attribute.$1.html",
       "patterns": [
         {
-          "include": "text.html.basic#attribute-interior"
+          "include": "#attribute-interior"
         }
       ]
     },
@@ -56,13 +46,53 @@
       "end": "(?=\\s*+[^=\\s])",
       "patterns": [
         {
-          "include": "#attribute-interior"
+          "begin": "=",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.key-value.html"
+            }
+          },
+          "end": "(?<=[^\\s=])(?!\\s*=)|(?=/?>)",
+          "patterns": [
+            {
+              "include": "#string-unquote"
+            },
+            {
+              "name": "string.quoted.double.spx-state.html",
+              "begin": "\"",
+              "beginCaptures": {
+                "0": {
+                  "name": "punctuation.definition.string.begin.html"
+                }
+              },
+              "end": "\"",
+              "endCaptures": {
+                "0": {
+                  "name": "punctuation.definition.string.end.html"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "#value-reference"
+                },
+                {
+                  "include": "#value-events"
+                }
+              ]
+            },
+            {
+              "include": "#single-quotes"
+            },
+            {
+              "include": "#invalid-equal"
+            }
+          ]
         }
       ]
     },
-    "data": {
-      "name": "meta.attribute.$1.html",
-      "begin": "(spx\\-[a-z]+)(:)([a-zA-Z0-9_-]+)(?=\\=)",
+    "states": {
+      "name": "meta.attribute.$1.$3.html",
+      "begin": "(spx\\-[a-z]+)(:)([a-zA-Z0-9_-]+)",
       "beginCaptures": {
         "1": {
           "name": "support.class.spx.html"
@@ -72,38 +102,9 @@
         },
         "3": {
           "name": "support.type.property-name.spx.html"
-        },
-        "4": {
-          "name": "punctuation.separator.key-value.html"
         }
       },
       "end": "(?=\\s*+[^=\\s])",
-      "patterns": [
-        {
-          "include": "#attribute-interior"
-        }
-      ]
-    },
-    "values": {
-      "patterns": [
-        {
-          "match": "([a-zA-Z0-9_-]+)([\\.|, ])([a-zA-Z0-9_-]+)",
-          "captures": {
-            "1": {
-              "name": "support.type.property-name.spx.html"
-            },
-            "2": {
-              "name": "keyword.operator.spx.html"
-            }
-          }
-        },
-        {
-          "match": "\\b(true|false)\\b",
-          "name": "constant.other.spx.html"
-        }
-      ]
-    },
-    "attribute-interior": {
       "patterns": [
         {
           "begin": "=",
@@ -115,15 +116,14 @@
           "end": "(?<=[^\\s=])(?!\\s*=)|(?=/?>)",
           "patterns": [
             {
-              "match": "([^\\s\"'=<>`/]|/(?!>))+",
-              "name": "string.unquoted.html"
+              "include": "#string-unquote"
             },
             {
-              "name": "string.quoted.double.html",
+              "name": "string.quoted.double.spx-state.html",
               "begin": "\"",
               "beginCaptures": {
                 "0": {
-                  "name": "punctuation.definition.string.begin.spx.html"
+                  "name": "punctuation.definition.string.begin.html"
                 }
               },
               "end": "\"",
@@ -134,69 +134,212 @@
               },
               "patterns": [
                 {
-                  "match": "\\b(true|false)\\b",
-                  "name": "constant.other.spx.html"
+                  "include": "#value-boolean"
                 },
                 {
-                  "match": "(\\d+|\\d+\\.\\d+)",
-                  "name": "constant.numeric.decimal.spx.html"
+                  "include": "#value-number"
                 },
                 {
-                  "match": "([a-zA-Z0-9_-]+)(\\.)([a-zA-Z0-9_-]+)",
-                  "captures": {
-                    "1": {
-                      "name": "variable.other.constant.spx.html",
-                      "patterns": [
-                        {
-                          "match": "\\b(window)\\b",
-                          "name": "variable.other.object.spx.html"
-                        }
-                      ]
-                    },
-                    "2": {
-                      "name": "keyword.operator.spx.html"
-                    },
-                    "3": {
-                      "name": "entity.name.function.spx.html"
-                    }
-                  }
+                  "include": "#value-window"
                 },
                 {
-                  "include": "#entities"
-                },
-                {
-                  "match": "[{[]",
-                  "include": "source.js"
+                  "include": "#value-json"
                 }
               ]
             },
             {
-              "begin": "'",
+              "include": "#single-quotes"
+            },
+            {
+              "include": "#invalid-equal"
+            }
+          ]
+        }
+      ]
+    },
+    "attribute-interior": {
+      "patterns": [
+        {
+          "begin": "(?<=component)\\=",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.key-value.html"
+            }
+          },
+          "end": "(?<=[^\\s=])(?!\\s*=)|(?=/?>)",
+          "patterns": [
+            {
+              "include": "#string-unquote"
+            },
+            {
+              "name": "string.quoted.double.spx-directive.html",
+              "begin": "\"",
               "beginCaptures": {
                 "0": {
                   "name": "punctuation.definition.string.begin.html"
                 }
               },
-              "end": "'",
+              "end": "\"",
               "endCaptures": {
                 "0": {
                   "name": "punctuation.definition.string.end.html"
                 }
               },
-              "name": "string.quoted.single.html",
               "patterns": [
                 {
-                  "include": "#entities"
+                  "match": "\\w+",
+                  "name": "keyword.control.class.html"
+                },
+                {
+                  "match": "[,|]",
+                  "name": "keyword.operator.spx.html"
                 }
               ]
             },
             {
-              "match": "=",
-              "name": "invalid.illegal.unexpected-equals-sign.html"
+              "include": "#single-quotes"
+            },
+            {
+              "include": "#invalid-equal"
+            }
+          ]
+        },
+        {
+          "begin": "=",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.key-value.html"
+            }
+          },
+          "end": "(?<=[^\\s=])(?!\\s*=)|(?=/?>)",
+          "patterns": [
+            {
+              "include": "#string-unquote"
+            },
+            {
+              "name": "string.quoted.double.spx-directive.html",
+              "begin": "\"",
+              "beginCaptures": {
+                "0": {
+                  "name": "punctuation.definition.string.begin.html"
+                }
+              },
+              "end": "\"",
+              "endCaptures": {
+                "0": {
+                  "name": "punctuation.definition.string.end.html"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "#value-boolean"
+                },
+                {
+                  "include": "#value-number"
+                },
+                {
+                  "include": "#value-reference"
+                }
+              ]
+            },
+            {
+              "include": "#single-quotes"
+            },
+            {
+              "include": "#invalid-equal"
             }
           ]
         }
       ]
+    },
+    "invalid-equal": {
+      "match": "=",
+      "name": "invalid.illegal.unexpected-equals-sign.html"
+    },
+    "string-unquote": {
+      "match": "([^\\s\"'=<>`/]|/(?!>))+",
+      "name": "string.unquoted.html"
+    },
+    "single-quotes": {
+      "begin": "'",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.html"
+        }
+      },
+      "end": "'",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.html"
+        }
+      },
+      "name": "string.quoted.single.html",
+      "patterns": [
+        {
+          "include": "text.html.basic#entities"
+        }
+      ]
+    },
+    "value-json": {
+      "begin": "\\G[\\{\\[]\\s",
+      "end": "[\\]\\}]",
+      "patterns": [
+        {
+          "include": "source.js"
+        }
+      ]
+    },
+    "value-window": {
+      "match": "\\G\\b(window)(\\.)(\\w+)(?!\\s)",
+      "captures": {
+        "1": {
+          "name": "variable.other.object.spx.html"
+        },
+        "2": {
+          "name": "keyword.operator.spx.html"
+        },
+        "3": {
+          "name": "entity.name.function.spx.html"
+        }
+      }
+    },
+    "value-boolean": {
+      "match": "\\G\\b(true|false)\\b(?!\\s)",
+      "name": "constant.language.boolean.$1.html"
+    },
+    "value-number": {
+      "match": "(\\d+|\\d+\\.\\d+)",
+      "name": "constant.numeric.decimal.spx.html"
+    },
+    "value-events": {
+      "begin": "\\s\\{",
+      "end": "\\}",
+      "patterns": [
+        {
+          "match": "\\b(passive|once)\\b",
+          "name": "entity.name.label.$1.html"
+        }
+      ]
+    },
+    "value-reference": {
+      "match": "(\\w+)(\\.)(\\w+)",
+      "captures": {
+        "1": {
+          "name": "meta.value.$1.html",
+          "patterns": [
+            {
+              "match": "\\b(window)\\b",
+              "name": "variable.other.object.spx.html"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.operator.spx.html"
+        },
+        "3": {
+          "name": "entity.name.function.spx.html"
+        }
+      }
     }
   }
 }
