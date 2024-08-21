@@ -1,0 +1,23 @@
+<!-- demo.js component -->
+<div
+  spx-component="demo"
+  spx-demo:string="tureeee"
+  spx-demo:clicks="0"
+  spx-cart:bogo=""
+  spx-demo:boolean="true"
+  spx-foo:change="I am true value of spx:change attribute"
+  spx-demo:object="{ str: 'bar', num: 1234, bool: true, arr: ['a', 1], obj: { x: false }  }"
+  spx-demo:array="[ { num: 1234:, str: 'foo' }, true, 'a', 1]">
+
+  <div spx-component="carousel" spx-carousel:drag-free="true">
+
+    <button spx@click="carousel.next">
+
+      <span spx-node="cart.count carousel.slideshow accordion.bar accordion."></span>
+
+    </button>
+
+
+  </div>
+
+</div>

@@ -1,0 +1,9 @@
+{
+  "spx.files": [
+    "./src/components/*.{ts}"
+  ],
+  "[liquid]": {
+    "editor.defaultFormatter": "sissel.shopify-liquid",
+    "editor.formatOnSave": true
+  }
+}

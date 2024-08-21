@@ -1,0 +1,28 @@
+{
+  "SPX Component": {
+    "prefix": "class",
+    "description": "SPX Component",
+    "body": [
+      "export class $1 extends spx.Component<typeof $1.define> {",
+      "\n",
+      "\tstatic define = {",
+      "\t\tstate: {},",
+      "\t\tnodes: <const>[]",
+      "\t}",
+      "\n",
+      "\t$0",
+      "\n",
+      "}"
+    ]
+  },
+  "SPX Define State": {
+    "prefix": "define state",
+    "description": "SPX State Definition",
+    "body": ["$1: ${2|String,Number,Boolean,Object,Array|}"]
+  },
+  "SPX Define Nodes": {
+    "prefix": "define nodes",
+    "description": "SPX Nodes Definition",
+    "body": ["nodes: <const>[", "\t'$1',", "\t$0", "]"]
+  }
+}

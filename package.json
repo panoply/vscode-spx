@@ -3,7 +3,7 @@
   "publisher": "sissel",
   "displayName": "SPX",
   "description": "SPX (Single Page XHR) Enhancements",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Νίκος Σαβίδης <n.savvidis@gmx.com>",
   "license": "MIT",
   "icon": "logo.png",
@@ -32,6 +32,12 @@
         "customData:/data.json"
       ]
     },
+    "snippets": [
+      {
+        "language": "typescript",
+        "path": "./snippets/component.json"
+      }
+    ],
     "commands": [
       {
         "title": "SPX: Enable Completions",
@@ -58,6 +64,18 @@
       {
         "title": "SPX Settings",
         "properties": {
+          "spx.files": {
+            "type": "array",
+            "markdownDescription": "Configure glob patterns to component files. Components will be scanned, parsed and made available within component directive completions",
+            "items": {
+              "type": "string"
+            }
+          },
+          "spx.completion.components": {
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Control whether or not SPX directive completions are provided in HTML/Markup languages. When set to `false`, the extension will not display completions for `spx-*` attributes and values, defaults to using `true`.\n\n> It's advisable to disable directive completions when working on projects that do not utilize SPX."
+          },
           "spx.completion.directives": {
             "type": "boolean",
             "default": true,
@@ -84,5 +102,8 @@
   },
   "optionalDependencies": {
     "@types/vscode": "^1.87.0"
+  },
+  "dependencies": {
+    "@typescript-eslint/typescript-estree": "^8.2.0"
   }
 }

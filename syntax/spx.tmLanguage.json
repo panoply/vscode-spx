@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "scopeName": "source.spx",
-  "injectionSelector": "L:text.html.derivative -entity.other.attribute-name.html",
+  "injectionSelector": "L:text.html.derivative -entity.other.attribute-name.html, L:source.liquid -entity.other.attribute-name",
   "patterns": [
     {
       "include": "#directives"
@@ -187,6 +187,10 @@
               },
               "patterns": [
                 {
+                  "match": "(?<=\\w+\\s+)\\b(as)\\b\\s+(?=\\w+)",
+                  "name": "keyword.operator.spx.html"
+                },
+                {
                   "match": "\\w+",
                   "name": "keyword.control.class.html"
                 },
@@ -286,6 +290,10 @@
       "patterns": [
         {
           "include": "source.js"
+        },
+        {
+          "match": "\\:",
+          "name": "keyword.operator.spx.html"
         }
       ]
     },
@@ -316,16 +324,17 @@
       "end": "\\}",
       "patterns": [
         {
-          "match": "\\b(passive|once)\\b",
+          "match": "\\b(passive|once|capture)\\b",
           "name": "entity.name.label.$1.html"
         }
       ]
     },
     "value-reference": {
+      "name": "meta.value.$1.html",
       "match": "(\\w+)(\\.)(\\w+)",
       "captures": {
         "1": {
-          "name": "meta.value.$1.html",
+          "name": "support.function.spx.html",
           "patterns": [
             {
               "match": "\\b(window)\\b",

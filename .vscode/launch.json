@@ -15,7 +15,7 @@
       "args": [
         "--disable-extensions",
         "--extensionDevelopmentPath=${workspaceFolder}",
-        "${workspaceFolder}/test/html-data.html"
+        "${workspaceFolder}/test"
       ]
     }
   ]

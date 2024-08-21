@@ -22,7 +22,33 @@ __export(extension_exports, {
   activate: () => activate
 });
 module.exports = __toCommonJS(extension_exports);
+var import_vscode2 = require("vscode");
+
+// extension/utils.ts
 var import_vscode = require("vscode");
+function getConfigTarget(key = "completion.directives") {
+  const target = import_vscode.workspace.getConfiguration("spx").inspect(key);
+  if (target == null ? void 0 : target.workspaceValue)
+    return import_vscode.ConfigurationTarget.Workspace;
+  if (target == null ? void 0 : target.workspaceFolderValue)
+    return import_vscode.ConfigurationTarget.WorkspaceFolder;
+  return import_vscode.ConfigurationTarget.Global;
+}
+function getConfigOption(key = "completion.directives") {
+  return import_vscode.workspace.getConfiguration("spx").get(key) || true;
+}
+function getConfigFiles() {
+  return import_vscode.workspace.getConfiguration("spx").get("files") || [];
+}
+function slash(path) {
+  const isExtendedLengthPath = path.startsWith("\\\\?\\");
+  if (isExtendedLengthPath)
+    return path;
+  return path.replace(/\\/g, "/");
+}
+function refineURI(filePath) {
+  return slash(filePath).replace(/^\.?\//, "");
+}
 
 // extension/data.ts
 var data_default = {
@@ -1996,15 +2022,64 @@ var data_default = {
   ]
 };
 
+// extension/parse.ts
+var import_typescript_estree = require("@typescript-eslint/typescript-estree");
+function parseComponent(code, model) {
+  var _a, _b;
+  const ast = (0, import_typescript_estree.parse)(code, { loc: false, range: false });
+  const ids = /* @__PURE__ */ new Set();
+  for (const body of ast.body) {
+    const declaration = body.type === import_typescript_estree.AST_NODE_TYPES.ExportNamedDeclaration ? body.declaration : body;
+    if ((declaration == null ? void 0 : declaration.type) === import_typescript_estree.AST_NODE_TYPES.ClassDeclaration && ((_a = declaration.superClass) == null ? void 0 : _a.type) === import_typescript_estree.AST_NODE_TYPES.MemberExpression && declaration.superClass.object.type === import_typescript_estree.AST_NODE_TYPES.Identifier && declaration.superClass.object.name === "spx" && declaration.superClass.property.type === import_typescript_estree.AST_NODE_TYPES.Identifier && declaration.superClass.property.name === "Component" && declaration.body.type === import_typescript_estree.AST_NODE_TYPES.ClassBody && declaration.id !== null) {
+      const component = declaration.id.name[0].toLowerCase() + declaration.id.name.slice(1);
+      const record = model.set(component, {
+        stateKeys: [],
+        nodeNames: [],
+        eventRefs: []
+      }).get(component);
+      ids.add(component);
+      for (const classBody of declaration.body.body) {
+        if (classBody.type === import_typescript_estree.AST_NODE_TYPES.PropertyDefinition && classBody.static === true && classBody.key.type === import_typescript_estree.AST_NODE_TYPES.Identifier && classBody.key.name === "define" && ((_b = classBody.value) == null ? void 0 : _b.type) === import_typescript_estree.AST_NODE_TYPES.ObjectExpression) {
+          for (const defineBody of classBody.value.properties) {
+            if (defineBody.type === import_typescript_estree.AST_NODE_TYPES.Property && defineBody.key.type === import_typescript_estree.AST_NODE_TYPES.Identifier) {
+              if (defineBody.value.type === import_typescript_estree.AST_NODE_TYPES.ObjectExpression && defineBody.key.name === "state") {
+                for (const stateKeys of defineBody.value.properties) {
+                  if (stateKeys.type === import_typescript_estree.AST_NODE_TYPES.Property && stateKeys.key.type === import_typescript_estree.AST_NODE_TYPES.Identifier) {
+                    record.stateKeys.push(stateKeys.key.name);
+                  }
+                }
+              } else if (defineBody.key.name === "nodes") {
+                const nodeType = defineBody.value.type === import_typescript_estree.AST_NODE_TYPES.TSTypeAssertion ? defineBody.value.expression : defineBody.value;
+                if (nodeType.type === import_typescript_estree.AST_NODE_TYPES.ArrayExpression) {
+                  for (const nodeNames of nodeType.elements) {
+                    if (nodeNames !== null && nodeNames.type === import_typescript_estree.AST_NODE_TYPES.Literal && typeof nodeNames.value === "string") {
+                      record.nodeNames.push(nodeNames.value);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        } else if (classBody.type === import_typescript_estree.AST_NODE_TYPES.MethodDefinition && classBody.key.type === import_typescript_estree.AST_NODE_TYPES.Identifier && classBody.value.type === import_typescript_estree.AST_NODE_TYPES.FunctionExpression) {
+          if (classBody.key.name !== "connect" && classBody.key.name !== "onmount" && classBody.key.name !== "unmount" && classBody.key.name !== "onmedia") {
+            record.eventRefs.push(classBody.key.name);
+          }
+        }
+      }
+    }
+  }
+  return ids;
+}
+
 // extension/index.ts
 var CustomData = class {
   // emitter and its event
-  onDidChangeEmitter = new import_vscode.EventEmitter();
+  onDidChangeEmitter = new import_vscode2.EventEmitter();
   onDidChange = this.onDidChangeEmitter.event;
   uri;
   schema = {};
   constructor(schema) {
-    this.uri = import_vscode.Uri.parse("customData:/data.json");
+    this.uri = import_vscode2.Uri.parse("customData:/data.json");
     this.data = schema;
   }
   get data() {
@@ -2021,34 +2096,137 @@ var CustomData = class {
     return JSON.stringify(this.data);
   }
 };
-function getConfigTarget(key = "completion.directives") {
-  const target = import_vscode.workspace.getConfiguration("spx").inspect(key);
-  if (target == null ? void 0 : target.workspaceValue)
-    return import_vscode.ConfigurationTarget.Workspace;
-  if (target == null ? void 0 : target.workspaceFolderValue)
-    return import_vscode.ConfigurationTarget.WorkspaceFolder;
-  return import_vscode.ConfigurationTarget.Global;
-}
-function getConfigOption(key = "completion.directives") {
-  return import_vscode.workspace.getConfiguration("spx").get(key) || true;
-}
+var Components = class {
+  files = /* @__PURE__ */ new Map();
+  cache = /* @__PURE__ */ new Map();
+  async getUriFiles(files, disposable) {
+    var _a, _b;
+    const baseUri = (_b = (_a = import_vscode2.workspace) == null ? void 0 : _a.workspaceFolders) == null ? void 0 : _b[0];
+    if (baseUri) {
+      for (const path of files) {
+        const relative = new import_vscode2.RelativePattern(baseUri, refineURI(path));
+        await this.findFiles(relative);
+        const watch = import_vscode2.workspace.createFileSystemWatcher(relative);
+        watch.onDidCreate(this.onCreateFile, this, disposable);
+        watch.onDidChange(this.onChangeFile, this, disposable);
+        watch.onDidDelete(this.onDeleteFile, this, disposable);
+      }
+    }
+  }
+  async findFiles(relative) {
+    const files = await import_vscode2.workspace.findFiles(relative);
+    if (files) {
+      for (const uri of files) {
+        if (!this.files.has(uri.fsPath)) {
+          await this.onCreateFile(uri);
+        }
+      }
+    }
+  }
+  async onCreateFile(uri) {
+    if (uri.fsPath.endsWith(".ts") || uri.fsPath.endsWith(".js")) {
+      const read = await import_vscode2.workspace.fs.readFile(uri);
+      const ids = parseComponent(read.toString(), this.cache);
+      this.files.set(uri.fsPath, ids);
+    }
+  }
+  onDeleteFile(uri) {
+    if (this.files.has(uri.fsPath)) {
+      const component = this.files.get(uri.fsPath);
+      if (component) {
+        for (const id of component)
+          this.cache.delete(id);
+        this.files.delete(uri.fsPath);
+      }
+    }
+  }
+  async onChangeFile(uri) {
+    if (this.files.has(uri.fsPath)) {
+      const read = await import_vscode2.workspace.fs.readFile(uri);
+      const ids = parseComponent(read.toString(), this.cache);
+      this.files.set(uri.fsPath, ids);
+    }
+  }
+};
+var Completions = class extends Components {
+  async provideCompletionItems(textDocument, position) {
+    const value = textDocument.lineAt(position).text.slice(0, position.character);
+    const index = value.lastIndexOf("spx");
+    if (index === -1)
+      return [];
+    const attr = value.slice(index);
+    if (/spx-.*?:$/.test(attr)) {
+      for (const [component, records] of this.cache) {
+        if (!attr.endsWith(`spx-${component}:`))
+          continue;
+        return records.stateKeys.map((label) => new import_vscode2.CompletionItem(
+          label,
+          import_vscode2.CompletionItemKind.Property
+        ));
+      }
+    } else if (attr.endsWith("spx-")) {
+      return [...this.cache.keys()].map((label) => new import_vscode2.CompletionItem(label, import_vscode2.CompletionItemKind.Class));
+    } else if (/spx@.*?=".*?$/.test(attr)) {
+      if (attr.endsWith('="') || /[ |,]$/.test(attr)) {
+        return [...this.cache.keys()].map((label) => new import_vscode2.CompletionItem(label, import_vscode2.CompletionItemKind.Class));
+      } else if (attr.endsWith(".")) {
+        for (const [component, records] of this.cache) {
+          if (!attr.endsWith(`${component}.`))
+            continue;
+          return records.eventRefs.map((label) => new import_vscode2.CompletionItem(
+            label,
+            import_vscode2.CompletionItemKind.Property
+          ));
+        }
+      }
+    } else if (/spx-node=".*?$/.test(attr)) {
+      if (attr.endsWith('="') || /[ |,]$/.test(attr)) {
+        return [...this.cache.keys()].map((label) => new import_vscode2.CompletionItem(label, import_vscode2.CompletionItemKind.Class));
+      } else if (attr.endsWith(".")) {
+        for (const [component, records] of this.cache) {
+          if (!attr.endsWith(`${component}.`))
+            continue;
+          return records.nodeNames.map((label) => new import_vscode2.CompletionItem(
+            label,
+            import_vscode2.CompletionItemKind.Reference
+          ));
+        }
+      }
+    }
+    return void 0;
+  }
+  resolveCompletionItem(item) {
+    return item;
+  }
+};
 async function activate(context) {
-  const schema = import_vscode.workspace.getConfiguration("spx").get("completion.directives") ? data_default : {};
+  const schema = import_vscode2.workspace.getConfiguration("spx").get("completion.directives") ? data_default : {};
   const customData = new CustomData(schema);
-  const provider = import_vscode.workspace.registerTextDocumentContentProvider("customData", customData);
-  const enable = import_vscode.commands.registerCommand("spx.enableCompletions", () => {
+  const onProvider = import_vscode2.workspace.registerTextDocumentContentProvider("customData", customData);
+  const components = new Completions();
+  const files = getConfigFiles();
+  await components.getUriFiles(files, context.subscriptions);
+  const enable = import_vscode2.commands.registerCommand("spx.enableCompletions", () => {
     if (getConfigOption() === false) {
-      import_vscode.workspace.getConfiguration("spx").update("completion.directives", true, getConfigTarget());
+      import_vscode2.workspace.getConfiguration("spx").update("completion.directives", true, getConfigTarget());
       customData.data = data_default;
     }
   });
-  const disable = import_vscode.commands.registerCommand("spx.disableCompletions", () => {
+  const disable = import_vscode2.commands.registerCommand("spx.disableCompletions", () => {
     if (getConfigOption() === true) {
-      import_vscode.workspace.getConfiguration("spx").update("completion.directives", false, getConfigTarget());
+      import_vscode2.workspace.getConfiguration("spx").update("completion.directives", false, getConfigTarget());
       customData.data = {};
     }
   });
-  const onConfig = import_vscode.workspace.onDidChangeConfiguration((event) => {
+  const onComplete = import_vscode2.languages.registerCompletionItemProvider(
+    { pattern: "**/*.{html,liquid}" },
+    components,
+    ".",
+    '"',
+    "-",
+    ":"
+  );
+  const onConfig = import_vscode2.workspace.onDidChangeConfiguration((event) => {
     if (event.affectsConfiguration("spx")) {
       const option = getConfigOption();
       if (option === true) {
@@ -2064,7 +2242,8 @@ async function activate(context) {
     enable,
     disable,
     onConfig,
-    provider
+    onComplete,
+    onProvider
   );
 }
 // Annotate the CommonJS export names for ESM import in node:
