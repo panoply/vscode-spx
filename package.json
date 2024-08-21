@@ -88,7 +88,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "data": "cd data; node ./generate.cjs; cd ..",
-    "build": "vsce package --no-dependencies"
+    "build": "tsup --minify && vsce package --no-dependencies"
   },
   "prettier": "@sissel/prettier-config",
   "eslintConfig": {
