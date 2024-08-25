@@ -16,16 +16,6 @@ export default {
           ]
         },
         {
-          name: 'spx-hydrate',
-          description: 'Executes a replacement of the defined elements. Hydrate is different from `replace`, `append` and `prepend` methods in the sense that the those are combined with your defined `targets`. When calling Hydrate, it will run precedence over `targets` and for the visit it will replace only the element/s provided.',
-          references: [
-            {
-              name: 'SPX Reference',
-              url: 'https://spx.js.org/attributes/spx-hydrate/'
-            }
-          ]
-        },
-        {
           name: 'spx-replace',
           description: 'Executes a replacement of defined targets, where each target defined in the array is replaced.',
           values: [
@@ -1071,7 +1061,7 @@ export default {
       references: [
         {
           name: 'SPX Reference',
-          url: 'https://spx.js.org/components/directives'
+          url: 'https://spx.js.org/directives/spx-component'
         }
       ]
     },
@@ -1081,7 +1071,7 @@ export default {
       references: [
         {
           name: 'SPX Reference',
-          url: 'https://spx.js.org/components/nodes'
+          url: 'https://spx.js.org/directives/spx-node'
         }
       ]
     },

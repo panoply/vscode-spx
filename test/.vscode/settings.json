@@ -1,4 +1,5 @@
 {
+  "spx.enable": true,
   "spx.files": [
     "./src/components/*.{ts}"
   ],

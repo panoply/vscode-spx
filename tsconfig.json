@@ -1,0 +1,10 @@
+{
+  "include": [
+    "extension"
+  ],
+  "compilerOptions": {
+    "target": "ES6",
+    "moduleResolution": "Bundler",
+    "strictNullChecks": false
+  }
+}

@@ -23,13 +23,13 @@ const componentDirectives = require('./directives/components.json');
 const tagAttributes = {};
 
 for (const attr of tagDirectives.concat(tagEvents)) {
-  if(Array.isArray(attr.tags)) {
+  if (Array.isArray(attr.tags)) {
     for (const tag of [ ...attr.tags ]) {
-      if('tags' in attr) delete attr.tags
-      if(tag in tagAttributes) {
-        tagAttributes[tag].push(attr)
+      if ('tags' in attr) delete attr.tags;
+      if (tag in tagAttributes) {
+        tagAttributes[tag].push(attr);
       } else {
-        tagAttributes[tag] = [ attr ]
+        tagAttributes[tag] = [ attr ];
       }
     }
   }
@@ -37,13 +37,12 @@ for (const attr of tagDirectives.concat(tagEvents)) {
 
 const tags = [];
 
-for ( const name in tagAttributes) {
+for (const name in tagAttributes) {
   tags.push({
     name,
     attributes: tagAttributes[name]
-  })
+  });
 }
-
 
 const schema = JSON.stringify({
   version: 1.1,
@@ -61,4 +60,4 @@ const schema = JSON.stringify({
   ]
 }, null, 2);
 
-writeFileSync('../spx.html-data.json', schema)
+writeFileSync('../spx.html-data.json', schema);

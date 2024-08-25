@@ -61,33 +61,33 @@ export class Drawer extends spx.Component<typeof Drawer.define> {
   /**
    * Returns the backdrop element
    */
-  get backdrop () {
+  get backdrop() {
     return Drawer.backdrop;
   }
 
   /**
    * Returns the drawer direction class name
    */
-  get directionClass () {
+  get directionClass() {
     return `drawer-${this.state.direction}`;
   }
 
   /**
    * Returns the drawer shift class name
    */
-  get shiftClass () {
+  get shiftClass() {
     return `drawer-${this.state.mode}`;
   }
 
   /**
    * Returns the shifts transition class name
    */
-  get shifts () {
+  get shifts() {
     return document.querySelectorAll<HTMLElement>(this.state.shift);
   }
 
 
-  connect () {
+  connect() {
 
 
     if (Drawer.backdrop === null) {
@@ -114,7 +114,7 @@ export class Drawer extends spx.Component<typeof Drawer.define> {
 
   }
 
-  onmount () {
+  onmount() {
 
 
     if (document.body.contains(Drawer.backdrop) === false) {
@@ -143,7 +143,7 @@ export class Drawer extends spx.Component<typeof Drawer.define> {
     }
 
     if (this.state.isOpen) {
-      if (qvp.test([ 'lg', 'xl', 'xxl' ])) {
+      if (qvp.test(['lg', 'xl', 'xxl'])) {
         this.close();
       } else {
         setTimeout(this.close.bind(this), 200);
@@ -153,7 +153,7 @@ export class Drawer extends spx.Component<typeof Drawer.define> {
 
   }
 
-  open () {
+  open() {
 
     //    Drawer.opened = this.target.id;
 
@@ -187,7 +187,7 @@ export class Drawer extends spx.Component<typeof Drawer.define> {
     this.target.ariaHidden = 'false';
   }
 
-  close () {
+  close() {
 
     if (this.state.isOpen) {
       this.state.isOpen = false;
@@ -244,7 +244,7 @@ export class Drawer extends spx.Component<typeof Drawer.define> {
   /**
    * Set attribute requirements for the elements which apply transform shifting
    */
-  shiftNodeElms () {
+  shiftNodeElms() {
 
     if (this.state.mode === 'pull') {
 
@@ -305,7 +305,7 @@ export class Drawer extends spx.Component<typeof Drawer.define> {
   /**
    * Touch Start scroll position
    */
-  touchStart ({ target }: SPX.TouchEvent) {
+  touchStart({ target }: SPX.TouchEvent) {
 
     const { scrollTop, offsetHeight } = target;
     const position = scrollTop + offsetHeight;

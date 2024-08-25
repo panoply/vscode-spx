@@ -23,8 +23,12 @@ The below workspace settings are made available:
 <!-- prettier-ignore -->
 ```jsonc
 {
-  "spx.files": [], // Provide components glob for completions in markup files
-  "spx.completion.directives": true   // Enable/Disable directive completions
+  "spx.enable": true,   // Enable/Disable directive completions
+  "spx.files": [],      // Provide components glob for completions in markup files
+  "spx.include": [      // Additional file extensions which enable spx
+    ".html",
+    ".liquid
+  ]
 }
 ```
 

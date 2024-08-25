@@ -3,7 +3,7 @@
   "publisher": "sissel",
   "displayName": "SPX",
   "description": "SPX (Single Page XHR) Enhancements",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Νίκος Σαβίδης <n.savvidis@gmx.com>",
   "license": "MIT",
   "icon": "logo.png",
@@ -23,13 +23,14 @@
   ],
   "main": "./dist/index.js",
   "activationEvents": [
+    "onStartupFinished",
     "onLanguage:html",
     "onLanguage:liquid"
   ],
   "contributes": {
     "html": {
       "customData": [
-        "customData:/data.json"
+        "customData:/spx.json"
       ]
     },
     "snippets": [
@@ -40,14 +41,14 @@
     ],
     "commands": [
       {
-        "title": "SPX: Enable Completions",
-        "shortTitle": "Activate SPX Directive Completions",
-        "command": "spx.enableCompletions"
+        "title": "SPX: Enable",
+        "shortTitle": "Activate SPX Extension",
+        "command": "spx.enable"
       },
       {
-        "title": "SPX: Disable Completions",
-        "shortTitle": "Deactivate SPX Directive Completions",
-        "command": "spx.disableCompletions"
+        "title": "SPX: Disable",
+        "shortTitle": "Deactivate SPX Extension",
+        "command": "spx.disable"
       }
     ],
     "grammars": [
@@ -66,17 +67,24 @@
         "properties": {
           "spx.files": {
             "type": "array",
-            "markdownDescription": "Configure glob patterns to component files. Components will be scanned, parsed and made available within component directive completions",
+            "default": [],
+            "markdownDescription": "Configure glob patterns to component files located in your project. Components will be scanned, parsed and made available in directive completions.",
             "items": {
               "type": "string"
             }
           },
-          "spx.completion.components": {
-            "type": "boolean",
-            "default": true,
-            "markdownDescription": "Control whether or not SPX directive completions are provided in HTML/Markup languages. When set to `false`, the extension will not display completions for `spx-*` attributes and values, defaults to using `true`.\n\n> It's advisable to disable directive completions when working on projects that do not utilize SPX."
+          "spx.languages": {
+            "type": "array",
+            "markdownDescription": "By default, the extension will activate on `html` and `liquid` languages, but you can extend support to additional markup-like language files. For example, if you wish to have spx completions show within `.erb` (Ruby) templates, add `erb` to this list.",
+            "default": [
+              "html",
+              "liquid"
+            ],
+            "items": {
+              "type": "string"
+            }
           },
-          "spx.completion.directives": {
+          "spx.enable": {
             "type": "boolean",
             "default": true,
             "markdownDescription": "Control whether or not SPX directive completions are provided in HTML/Markup languages. When set to `false`, the extension will not display completions for `spx-*` attributes and values, defaults to using `true`.\n\n> It's advisable to disable directive completions when working on projects that do not utilize SPX."
@@ -98,7 +106,8 @@
     "@sissel/eslint-config": "^1.2.1",
     "@sissel/prettier-config": "^1.2.5",
     "@vscode/web-custom-data": "^0.4.8",
-    "tsup": "^8.0.1"
+    "tsup": "^8.0.1",
+    "type-fest": "^4.25.0"
   },
   "optionalDependencies": {
     "@types/vscode": "^1.87.0"

@@ -1,6 +1,5 @@
 <!-- demo.js component -->
 <div
-  spx-component="demo"
   spx-demo:string="tureeee"
   spx-demo:clicks="0"
   spx-cart:bogo=""
@@ -11,9 +10,10 @@
 
   <div spx-component="carousel" spx-carousel:drag-free="true">
 
-    <button spx@click="carousel.next">
+    <button spx@blur="accordion." spx@click="carousel.next">
 
-      <span spx-node="cart.count carousel.slideshow accordion.bar accordion."></span>
+
+      <span spx-node="  carousel.slideshow accordion.bar accordion."></span>
 
     </button>
 
