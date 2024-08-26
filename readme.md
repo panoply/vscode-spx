@@ -6,9 +6,10 @@ Language and intelliSense support for the [SPX](https://spx.js.org) JavaScript/T
 
 - Syntax Highlighting for `spx-*` annotations in markup.
 - Supports grammar targeting for highlight customizations.
-- SPX Specific Directive Completions with descriptions
+- SPX Specific Directive Completions with descriptions.
 - Event Directive Completions with MDN descriptions.
 - Component Completions with state defined referencing.
+- IntelliSense for state, events and nodes within workspace.
 
 # Usage
 
@@ -25,9 +26,9 @@ The below workspace settings are made available:
 {
   "spx.enable": true,   // Enable/Disable directive completions
   "spx.files": [],      // Provide components glob for completions in markup files
-  "spx.include": [      // Additional file extensions which enable spx
-    ".html",
-    ".liquid
+  "spx.languages": [      // Additional languages extensions which enable spx
+    "html",
+    "liquid
   ]
 }
 ```
