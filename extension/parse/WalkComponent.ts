@@ -4,6 +4,7 @@ import { parse, AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-e
 import { Uri } from 'vscode';
 import { downcase, kebabCase } from '../utils';
 import { ElementNames, SPXEventNames, SPXEventProperties } from './const';
+import { isEventAnnotation, isNotHookMethod } from '../shared/utils';
 
 export enum EventSortOrder {
   /**
@@ -63,6 +64,10 @@ export enum EventSortOrder {
   UNLIKELY = 5,
 }
 
+/* -------------------------------------------- */
+/* TYPES                                        */
+/* -------------------------------------------- */
+
 export interface Nodes {
   /**
    * The raw name as per the array list
@@ -87,6 +92,10 @@ export interface Nodes {
    * ```
    */
   elementName: string;
+  /**
+   * Element type to be returned on the `this.dom.someNode`
+   */
+  elementType: string;
   /**
    * The location range of this state value
    */
@@ -170,7 +179,7 @@ export interface Model {
   /**
    * The component (downcase) markup name.
    */
-  name: string;
+  label: string;
   /**
    *  The component (PascalCase) name.
    */
@@ -195,24 +204,11 @@ export interface Model {
 
 }
 
-function isNotHookMethod (name: string) {
+/* -------------------------------------------- */
+/* UTILITIES                                    */
+/* -------------------------------------------- */
 
-  return (
-    name !== 'connect' &&
-    name !== 'onmount' &&
-    name !== 'unmount' &&
-    name !== 'onmedia'
-  );
-
-}
-
-function isEventAnnotation (name: string) {
-
-  return name === 'Event' || /^[A-Z][a-z][A-Za-z]+Event$/.test(name);
-
-}
-
-function setDefaultStates (name: string, state: State) {
+function DefaultStates (name: string, state: State) {
 
   if (name === 'String') {
 
@@ -236,14 +232,20 @@ function setDefaultStates (name: string, state: State) {
 
 }
 
+/* -------------------------------------------- */
+/* WALKS                                        */
+/* -------------------------------------------- */
+
 function WalkNodes (name: string, nodesBody: TSESTree.StringLiteral, nodes: Map<string, Nodes>) {
 
   const prefix = name.match(/[a-z]+(?=[A-Z])/)?.input;
+  const elementName = ElementNames.has(name) ? name : ElementNames.has(prefix) ? prefix : null;
 
   nodes.set(name, {
     name,
     domName: `${name}Node`,
-    elementName: ElementNames.has(name) ? name : ElementNames.has(prefix) ? prefix : null,
+    elementName,
+    elementType: elementName ? ElementNames[elementName] : 'HTMLElement',
     range: nodesBody.loc
   });
 
@@ -253,16 +255,16 @@ function WalkState (name: string, stateBody: TSESTree.Property, record: Map<stri
 
   const state: State = {
     name,
-    markupName: null,
+    markupName: kebabCase(name),
     valueDefault: null,
     valueLiteral: null,
     valueType: null,
-    range: null
+    range: stateBody.loc
   };
 
   if (stateBody.value.type === AST_NODE_TYPES.Identifier) {
 
-    setDefaultStates(stateBody.value.name, state);
+    DefaultStates(stateBody.value.name, state);
 
   } else if (
     stateBody.value.type === AST_NODE_TYPES.TSInstantiationExpression &&
@@ -271,31 +273,32 @@ function WalkState (name: string, stateBody: TSESTree.Property, record: Map<stri
     if (stateBody.value.expression.name === 'String') {
       if (
         stateBody.value.typeArguments.type === AST_NODE_TYPES.TSTypeParameterInstantiation &&
-        stateBody.value.typeArguments.params.length === 1 &&
         stateBody.value.typeArguments.params[0].type === AST_NODE_TYPES.TSUnionType) {
 
         for (const typeUnion of stateBody.value.typeArguments.params[0].types) {
           if (
             typeUnion.type === AST_NODE_TYPES.TSLiteralType &&
-            typeUnion.literal.type === AST_NODE_TYPES.Literal &&
-            typeof typeUnion.literal.value === 'string') {
+            typeUnion.literal.type === AST_NODE_TYPES.Literal) {
 
             // We have literal types
             if (state.valueLiteral === null) state.valueLiteral = [];
 
-            state.valueLiteral.push(typeUnion.literal.value);
+            state.valueLiteral.push(typeUnion.literal.value as string);
 
           }
         }
       }
 
       if (state.valueLiteral === null) {
-        setDefaultStates(stateBody.value.expression.name, state);
+        DefaultStates(stateBody.value.expression.name, state);
+      } else {
+        state.valueDefault = '';
+        state.valueType = 'string';
       }
 
     } else {
 
-      setDefaultStates(stateBody.value.expression.name, state);
+      DefaultStates(stateBody.value.expression.name, state);
 
     }
 
@@ -309,7 +312,7 @@ function WalkState (name: string, stateBody: TSESTree.Property, record: Map<stri
         if (
           stateProperty.key.name === 'typeof' &&
           stateProperty.value.type === AST_NODE_TYPES.Identifier) {
-          setDefaultStates(stateProperty.value.name, state);
+          DefaultStates(stateProperty.value.name, state);
         } else if (
           stateProperty.key.name === 'default' &&
           stateProperty.value.type === AST_NODE_TYPES.Literal &&
@@ -324,14 +327,7 @@ function WalkState (name: string, stateBody: TSESTree.Property, record: Map<stri
 
   }
 
-  if (state.valueType !== null) {
-
-    state.markupName = kebabCase(name);
-    state.range = stateBody.loc;
-
-    record.set(state.markupName, state);
-
-  }
+  record.set(state.markupName, state);
 
 }
 
@@ -484,16 +480,16 @@ export function WalkComponent (uri: Uri, code: string, model: Map<string, Model>
       declaration.body.type === AST_NODE_TYPES.ClassBody &&
       declaration.id !== null) {
 
-      const name = downcase(declaration.id.name);
+      const label = downcase(declaration.id.name);
 
-      keys.add(name);
+      keys.add(label);
 
       let record: Model;
       let known: boolean;
 
-      if (model.has(name)) {
+      if (model.has(label)) {
 
-        record = model.get(name);
+        record = model.get(label);
         known = true;
 
         record.identifier = false;
@@ -503,9 +499,9 @@ export function WalkComponent (uri: Uri, code: string, model: Map<string, Model>
 
       } else {
 
-        model.set(name, {
+        model.set(label, {
           uri,
-          name,
+          label,
           className: declaration.id.name,
           identifier: false,
           events: new Map(),
@@ -513,7 +509,7 @@ export function WalkComponent (uri: Uri, code: string, model: Map<string, Model>
           states: new Map()
         });
 
-        record = model.get(name);
+        record = model.get(label);
         known = false;
 
       }

@@ -4,82 +4,41 @@ import {
   commands,
   languages
 } from 'vscode';
-import * as util from './utils';
-import data from './providers/data';
-import { SPXCompletions } from './providers/SPXCompletions';
-import { SPXSchemaContent } from './providers/SPXSchemaContent';
+import { SPXCompletionProvider } from './providers/SPXCompletionProvider';
+import { SPXContentProvider } from './providers/SPXContentProvider';
+import { TRIGGERS } from './shared/const';
+import { SPXHoverProvider } from './providers/SPXHoverProvider';
+import { service } from './service';
+import { getConfigLanguages, onDidChangeConfiguration } from './config';
+import { disable, enable } from './commands';
+import { contributes } from '../package.json';
 
 /**
  * SPX Extension
  */
 export async function activate (context: ExtensionContext) {
 
-  const enable = workspace.getConfiguration('spx').get<boolean>('enable');
-  const schema = enable ? data : {};
-  const customData = new SPXSchemaContent(schema);
-  const components = new SPXCompletions(customData.data);
-  const files = util.getConfigFiles();
-
-  await components.getUriFiles(files, context.subscriptions);
-
-  const onEnable = commands.registerCommand('spx.enable', () => {
-    if (util.getConfigEnable() === false) {
-      workspace.getConfiguration('spx').update('enable', true, util.getConfigTarget());
-      customData.data = data;
-    }
-  });
-
-  const onDisable = commands.registerCommand('spx.disable', () => {
-    if (util.getConfigEnable() === true) {
-      workspace.getConfiguration('spx').update('enable', false, util.getConfigTarget());
-      customData.data = {};
-    }
-  });
-
-  const onProvider = workspace.registerTextDocumentContentProvider('customData', customData);
-
-  const onComplete = languages.registerCompletionItemProvider(
-    [
-      {
-        scheme: 'file',
-        language: 'html'
-      },
-      {
-        scheme: 'file',
-        language: 'liquid'
+  if (!('disposable' in service)) {
+    Object.defineProperty(service, 'disposable', {
+      get () {
+        return context.subscriptions;
       }
-    ],
-    components,
-    '.',
-    '"',
-    '-',
-    ' ',
-    ':'
-  );
+    });
+  }
 
-  const onConfig = workspace.onDidChangeConfiguration((event) => {
+  await service();
 
-    if (event.affectsConfiguration('spx')) {
-
-      const option = util.getConfigEnable();
-
-      if (option === true) {
-        customData.data = data;
-        console.log('SPX Enabled');
-      } else if (option === false) {
-        customData.data = {};
-        console.log('SPX Disabled');
-      }
-    }
-
-  });
+  service.provider = new SPXContentProvider(contributes.html.customData[0]);
+  const CompletionItemProvider = new SPXCompletionProvider();
+  const HoverProvider = new SPXHoverProvider();
 
   context.subscriptions.push(
-    onEnable,
-    onDisable,
-    onConfig,
-    onComplete,
-    onProvider
+    commands.registerCommand('spx.enable', enable),
+    commands.registerCommand('spx.disable', disable),
+    workspace.onDidChangeConfiguration(onDidChangeConfiguration),
+    workspace.registerTextDocumentContentProvider('customData', service.provider),
+    languages.registerCompletionItemProvider(getConfigLanguages(), CompletionItemProvider, ...TRIGGERS),
+    languages.registerHoverProvider(getConfigLanguages(), HoverProvider)
   );
 
 }

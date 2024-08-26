@@ -46,7 +46,7 @@ export function getConfigLanguages (): ReadonlyArray<DocumentFilter | string> {
   const files = workspace.getConfiguration('spx').get<string[]>('languages');
 
   return [ 'html', 'liquid', ...files ]
-    .map(file => /^\.$/.test(file) ? file.slice(1) : file)
+    .map(file => /^\./.test(file) ? file.slice(1) : file)
     .filter((file, i, a) => file.length > 1 ? a.indexOf(file) === i : false)
     .map(language => ({ scheme: 'file', language }));
 

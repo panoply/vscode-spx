@@ -26,31 +26,11 @@ export class Drawer extends spx.Component<typeof Drawer.define> {
       offset: String,
       direction: String,
       shift: String,
-      redraw: String,
-      backdropClass: {
-        typeof: String,
-        default: 'backdrop'
-      },
-      useParent: {
-        typeof: Boolean,
-        default: false
-      },
-      isOpen: {
-        typeof: Boolean,
-        default: false
-      },
-      bodyScroll: {
-        typeof: Boolean,
-        default: false
-      },
       backdrop: {
         typeof: Boolean,
         default: true
       },
-      mode: {
-        typeof: String,
-        default: 'overlay'
-      }
+      mode: String<'foo' | 'bar' | 'baz' | 'qux'>,
     },
     nodes: <const>[
       'mount'
