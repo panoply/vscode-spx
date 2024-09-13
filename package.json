@@ -3,7 +3,7 @@
   "publisher": "sissel",
   "displayName": "SPX",
   "description": "SPX (Single Page XHR) Enhancements",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Νίκος Σαβίδης <n.savvidis@gmx.com>",
   "license": "MIT",
   "icon": "logo.png",
@@ -25,7 +25,11 @@
   "activationEvents": [
     "onStartupFinished",
     "onLanguage:html",
-    "onLanguage:liquid"
+    "onLanguage:liquid",
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact"
   ],
   "contributes": {
     "html": {
@@ -59,6 +63,45 @@
           "text.html.derivative",
           "source.liquid"
         ]
+      },
+      {
+        "scopeName": "source.spx-literal",
+        "path": "./syntax/dom.tmLanguage.json",
+        "injectTo": [
+          "source.js",
+          "source.js.jsx",
+          "source.jsx",
+          "source.ts",
+          "source.tsx",
+          "text.html.basic",
+          "text.html.derivative"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.markup": "html"
+        }
+      },
+      {
+        "injectTo": [
+          "source.js",
+          "source.js.jsx",
+          "source.jsx",
+          "source.ts",
+          "source.tsx",
+          "text.html.basic",
+          "text.html.derivative",
+          "text.html.markdown"
+        ],
+        "scopeName": "spx.dom-literal.injection",
+        "path": "./syntax/inject.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.template.expression.ts": "typescript"
+        }
+      }
+    ],
+    "typescriptServerPlugins": [
+      {
+        "name": "typescript-lit-html-plugin",
+        "enableForWorkspaceTypeScriptVersions": true
       }
     ],
     "configuration": [
@@ -83,6 +126,11 @@
             "items": {
               "type": "string"
             }
+          },
+          "spx.dom": {
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Whether or not to enable `spx.dom` and `this.dom` template literal intelliSense."
           },
           "spx.enable": {
             "type": "boolean",
@@ -113,6 +161,7 @@
     "@types/vscode": "^1.87.0"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "^8.2.0"
+    "@typescript-eslint/typescript-estree": "^8.2.0",
+    "typescript-lit-html-plugin": "^0.9.0"
   }
 }

@@ -11,6 +11,7 @@ import { SPXHoverProvider } from './providers/SPXHoverProvider';
 import { service } from './service';
 import { getConfigLanguages, onDidChangeConfiguration } from './config';
 import { disable, enable } from './commands';
+import { literal } from './literals';
 import { contributes } from '../package.json';
 
 /**
@@ -26,6 +27,7 @@ export async function activate (context: ExtensionContext) {
     });
   }
 
+  await literal();
   await service();
 
   service.provider = new SPXContentProvider(contributes.html.customData[0]);

@@ -41,42 +41,43 @@ export class Product extends spx.Component<typeof Product.define> {
   /**
    * Returns product state cache map
    */
-  get cache () {
+  get cache() {
+
     return Product.cache.get(this.root.id);
   }
 
   /**
    * Returns the dot navigation child elements
    */
-  get navs () {
+  get navs() {
     return this.dom.dotsNode.children;
   }
 
   /**
    * Returns the `data-spx` schema
    */
-  get spx () {
+  get spx() {
     return spx.$.config.schema + 'data';
   }
 
   /**
    * Returns the current slide
    */
-  get slideTarget () {
+  get slideTarget() {
     return this.carousel.slideNodes()[this.state.index];
   }
 
   /**
    * Whether or not the carousel variant slider should be enabled.
    */
-  get isMobile () {
+  get isMobile() {
     return qvp.test(this.state.breakpoint, '|');
   }
 
   /**
    * Whether or not the current item is within viewport
    */
-  get inViewport () {
+  get inViewport() {
 
     const rect = this.root.getBoundingClientRect();
     const wh = window.innerHeight || document.documentElement.clientHeight;
@@ -91,7 +92,7 @@ export class Product extends spx.Component<typeof Product.define> {
   /**
    * Stimulus: Connect
    */
-  onmount () {
+  onmount() {
 
     if (this.isMobile) {
 
@@ -115,7 +116,7 @@ export class Product extends spx.Component<typeof Product.define> {
 
   }
 
-  unmount (): void {
+  unmount(): void {
 
     if (this.state.emblaActive) {
       this.carousel.reInit({ active: false });
@@ -130,7 +131,7 @@ export class Product extends spx.Component<typeof Product.define> {
   /**
    * Renders the navigation dots to product item.
    */
-  dots () {
+  dots() {
 
     if (this.state.dotsRendered) return;
 
@@ -151,7 +152,7 @@ export class Product extends spx.Component<typeof Product.define> {
   /**
    * Establish an Embla instance
    */
-  onEmbla () {
+  onEmbla() {
 
     this.carousel = embla(this.root, {
       align: 'start',
@@ -175,7 +176,7 @@ export class Product extends spx.Component<typeof Product.define> {
   /**
    * Called for every new slide encountered.
    */
-  onSlide () {
+  onSlide() {
 
     this.state.index = this.carousel.selectedScrollSnap();
 
@@ -190,23 +191,23 @@ export class Product extends spx.Component<typeof Product.define> {
       next.classList.add('active');
     }
 
-    console.log( this.dom.variantNode)
+    console.log(this.dom.variantNode)
     if (this.state.index === 0) {
 
       this.dom.variantNode.innerHTML = this.onAttrs([
-        [ 'href', this.state.href ],
-        [ `${this.spx}:id`, this.root.id ],
-        [ `${this.spx}:name`, this.state.title ],
-        [ `${this.spx}:price`, this.state.price ]
+        ['href', this.state.href],
+        [`${this.spx}:id`, this.root.id],
+        [`${this.spx}:name`, this.state.title],
+        [`${this.spx}:price`, this.state.price]
       ], this.state.variant);
 
     } else {
 
       this.dom.variantNode.innerHTML = this.onAttrs([
-        [ 'href', 'data-href' ],
-        [ `${this.spx}:id`, 'data-id' ],
-        [ `${this.spx}:name`, 'data-name' ],
-        [ `${this.spx}:price`, 'data-price' ]
+        ['href', 'data-href'],
+        [`${this.spx}:id`, 'data-id'],
+        [`${this.spx}:name`, 'data-name'],
+        [`${this.spx}:price`, 'data-price']
       ]);
 
     }
@@ -218,9 +219,9 @@ export class Product extends spx.Component<typeof Product.define> {
    * and various other elements are required to align with current
    * slide.
    */
-  onAttrs (attrs: string[][], variantName: string = null) {
+  onAttrs(attrs: string[][], variantName: string = null) {
 
-    for (const [ product, variant ] of attrs) {
+    for (const [product, variant] of attrs) {
       const vattrs = variantName === null ? this.slideTarget.getAttribute(variant) : variant;
       this.dom.hrefNode.setAttribute(product, vattrs);
     }
@@ -229,7 +230,7 @@ export class Product extends spx.Component<typeof Product.define> {
 
   }
 
-  onIntersect ([ entry ]: IntersectionObserverEntry[]) {
+  onIntersect([entry]: IntersectionObserverEntry[]) {
 
     if (entry.isIntersecting === true) {
       if (!this.state.emblaActive) {
@@ -243,7 +244,7 @@ export class Product extends spx.Component<typeof Product.define> {
 
   }
 
-  onBookmark () {
+  onBookmark() {
 
     if ($.bookmarks.has(this.root.id)) {
       $.bookmarks.delete(this.root.id);

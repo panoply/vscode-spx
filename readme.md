@@ -5,6 +5,7 @@ Language and intelliSense support for the [SPX](https://spx.js.org) JavaScript/T
 ### Key Features
 
 - Syntax Highlighting for `spx-*` annotations in markup.
+- Syntax Highlighting for `dom` markup literals.
 - Supports grammar targeting for highlight customizations.
 - SPX Specific Directive Completions with descriptions.
 - Event Directive Completions with MDN descriptions.

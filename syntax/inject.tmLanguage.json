@@ -1,0 +1,10 @@
+{
+  "fileTypes": [],
+  "scopeName": "spx.dom-literal.injection",
+  "injectionSelector": "L:source.js (meta.embedded.block.js, meta.embedded.block.ts, meta.embedded.block.tsx), L:source.jsx (meta.embedded.block.js, meta.embedded.block.ts, meta.embedded.block.tsx), L:source.js.jsx (meta.embedded.block.js, meta.embedded.block.ts, meta.embedded.block.tsx), L:source.ts (meta.embedded.block.js, meta.embedded.block.ts, meta.embedded.block.tsx, entity.name.function.tagged-template.ts), L:source.tsx (meta.embedded.block.ts, meta.embedded.block.tsx)",
+  "patterns": [
+    {
+      "include": "source.ts#template-substitution-element"
+    }
+  ]
+}

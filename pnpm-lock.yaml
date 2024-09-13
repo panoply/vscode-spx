@@ -11,6 +11,9 @@ importers:
       '@typescript-eslint/typescript-estree':
         specifier: ^8.2.0
         version: 8.2.0(typescript@5.4.2)
+      typescript-lit-html-plugin:
+        specifier: ^0.9.0
+        version: 0.9.0
     optionalDependencies:
       '@types/vscode':
         specifier: ^1.87.0
@@ -37,6 +40,9 @@ packages:
   '@aashutoshrathi/word-wrap@1.2.6':
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
+
+  '@emmetio/extract-abbreviation@0.1.6':
+    resolution: {integrity: sha512-Ce3xE2JvTSEbASFbRbA1gAIcMcZWdS2yUYRaQbeM0nbOzaZrUYfa3ePtcriYRZOZmr+CkKA+zbjhvTpIOAYVcw==}
 
   '@esbuild/aix-ppc64@0.19.11':
     resolution: {integrity: sha512-FnzU0LyE3ySQk7UntJO4+qIiQgI7KoODnZg5xzXIrFJlKd2P2gwHsHY4927xj9y5PJmJSzULiUCWmv7iWnNa7g==}
@@ -1063,6 +1069,9 @@ packages:
     resolution: {integrity: sha512-g1MWMLBiz8FKi1e4w0UyVL3w+iJceWAFBAaBnnGKOpNa5f8TLktkbre1+s6oICydWAm+HRUGTmI+//xv2hvXYA==}
     hasBin: true
 
+  jsonc-parser@1.0.3:
+    resolution: {integrity: sha512-hk/69oAeaIzchq/v3lS50PXuzn5O2ynldopMC+SWBql7J2WtdptfB9dy8Y7+Og5rPkTCpn83zTiO8FMcqlXJ/g==}
+
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
@@ -1489,6 +1498,16 @@ packages:
     resolution: {integrity: sha512-yMi0PlwuznKHxKmcpoOdeLwxBoVPkqZxd7q2FgMkmD3bNwvF5VW0+UlUQ1k1vmktTu4Yu13Q0RIxEP8+B+wloA==}
     engines: {node: '>= 0.4'}
 
+  typescript-lit-html-plugin@0.9.0:
+    resolution: {integrity: sha512-Ux2I1sPpt2akNbRZiBAND9oA8XNE2BuVmDwsb7rZshJ9T8/Na2rICE5Tnuj9dPHdFUATdOGjVEagn1/v8T4gCQ==}
+
+  typescript-styled-plugin@0.13.0:
+    resolution: {integrity: sha512-GGMzv/JAd4S8mvWgHZslvW2G1HHrdurrp93oSR4h85SM8e5at7+KCqHsZICiTaL+iN25YGkJqoaZe4XklA76rg==}
+    deprecated: Deprecated in favor of https://github.com/styled-components/typescript-styled-plugin
+
+  typescript-template-language-service-decorator@2.3.2:
+    resolution: {integrity: sha512-hN0zNkr5luPCeXTlXKxsfBPlkAzx86ZRM1vPdL7DbEqqWoeXSxplACy98NpKpLmXsdq7iePUzAXloCAoPKBV6A==}
+
   typescript@5.4.2:
     resolution: {integrity: sha512-+2/g0Fds1ERlP6JsakQQDXjZdZMM+rqpamFZJEKh4kwTIn3iDkgKtby0CeNd5ATNZ4Ry1ax15TMx0W2V+miizQ==}
     engines: {node: '>=14.17'}
@@ -1499,6 +1518,25 @@ packages:
 
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
+
+  vscode-css-languageservice@3.0.13:
+    resolution: {integrity: sha512-RWkO/c/A7iXhHEy3OuEqkCqavDjpD4NF2Ca8vjai+ZtEYNeHrm1ybTnBYLP4Ft1uXvvaaVtYA9HrDjD6+CUONg==}
+
+  vscode-emmet-helper@1.2.11:
+    resolution: {integrity: sha512-ms6/Z9TfNbjXS8r/KgbGxrNrFlu4RcIfVJxTZ2yFi0K4gn+Ka9X1+8cXvb5+5IOBGUrOsPjR0BuefdDkG+CKbQ==}
+    deprecated: This package has been renamed to @vscode/emmet-helper, please update to the new name
+
+  vscode-html-languageservice@2.1.12:
+    resolution: {integrity: sha512-mIb5VMXM5jI97HzCk2eadI1K//rCEZXte0wBqA7PGXsyJH4KTyJUaYk9MR+mbfpUl2vMi3HZw9GUOLGYLc6l5w==}
+
+  vscode-languageserver-types@3.17.5:
+    resolution: {integrity: sha512-Ld1VelNuX9pdF39h2Hgaeb5hEZM2Z3jUrrMgWQAu82jMtZp7p3vJT3BzToKtZI7NgQssZje5o0zryOrhQvzQAg==}
+
+  vscode-nls@4.1.2:
+    resolution: {integrity: sha512-7bOHxPsfyuCqmP+hZXscLhiHwe7CSuFE4hyhbs22xPIhQ4jv99FcR4eBzfYYVLP356HNFpdvz63FFb/xw6T4Iw==}
+
+  vscode-uri@1.0.8:
+    resolution: {integrity: sha512-obtSWTlbJ+a+TFRYGaUumtVwb+InIUVI0Lu0VBUAPmj2cU5JutEXg3xUE0c2J5Tcy7h2DEKVJBFi+Y9ZSFzzPQ==}
 
   webidl-conversions@4.0.2:
     resolution: {integrity: sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==}
@@ -1543,6 +1581,8 @@ packages:
 snapshots:
 
   '@aashutoshrathi/word-wrap@1.2.6': {}
+
+  '@emmetio/extract-abbreviation@0.1.6': {}
 
   '@esbuild/aix-ppc64@0.19.11':
     optional: true
@@ -2700,6 +2740,8 @@ snapshots:
     dependencies:
       minimist: 1.2.8
 
+  jsonc-parser@1.0.3: {}
+
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
@@ -3135,6 +3177,22 @@ snapshots:
       is-typed-array: 1.1.13
       possible-typed-array-names: 1.0.0
 
+  typescript-lit-html-plugin@0.9.0:
+    dependencies:
+      typescript-styled-plugin: 0.13.0
+      typescript-template-language-service-decorator: 2.3.2
+      vscode-html-languageservice: 2.1.12
+      vscode-languageserver-types: 3.17.5
+
+  typescript-styled-plugin@0.13.0:
+    dependencies:
+      typescript-template-language-service-decorator: 2.3.2
+      vscode-css-languageservice: 3.0.13
+      vscode-emmet-helper: 1.2.11
+      vscode-languageserver-types: 3.17.5
+
+  typescript-template-language-service-decorator@2.3.2: {}
+
   typescript@5.4.2: {}
 
   unbox-primitive@1.0.2:
@@ -3147,6 +3205,29 @@ snapshots:
   uri-js@4.4.1:
     dependencies:
       punycode: 2.3.1
+
+  vscode-css-languageservice@3.0.13:
+    dependencies:
+      vscode-languageserver-types: 3.17.5
+      vscode-nls: 4.1.2
+
+  vscode-emmet-helper@1.2.11:
+    dependencies:
+      '@emmetio/extract-abbreviation': 0.1.6
+      jsonc-parser: 1.0.3
+      vscode-languageserver-types: 3.17.5
+
+  vscode-html-languageservice@2.1.12:
+    dependencies:
+      vscode-languageserver-types: 3.17.5
+      vscode-nls: 4.1.2
+      vscode-uri: 1.0.8
+
+  vscode-languageserver-types@3.17.5: {}
+
+  vscode-nls@4.1.2: {}
+
+  vscode-uri@1.0.8: {}
 
   webidl-conversions@4.0.2: {}
 
